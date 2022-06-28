@@ -82,10 +82,13 @@ out.NNiqr      = nan(1,length(tWin));
 out.SDNN       = nan(1,length(tWin));
 out.RMSSD      = nan(1,length(tWin));
 out.pnn50      = nan(1,length(tWin));
+out.pnn20      = nan(1,length(tWin));
 out.btsdet     = nan(1,length(tWin));
 out.avgsqi     = nan(1,length(tWin));
 out.tdflag     = nan(1,length(tWin));
+out.atc        = nan(1,length(tWin));
 
+ 
 %Analyze by Window
 
 % Loop through each window of RR data
@@ -114,17 +117,22 @@ for i_win = 1:length(tWin)
             out.NNkurt(i_win) = kurtosis(nn_win); 
             out.NNiqr(i_win) = iqr(nn_win.* 1000); % compute and convert to ms
             out.SDNN(i_win) = std(nn_win.* 1000); % compute and convert to ms % SDNN should only be done on longer data segments
-
+            % autocorrelation
+            acf = autocorr(nn_win.*1000,'NumLags', 10);
+            out.atc(i_win) = acf(11);
             % RMSSD
             out.RMSSD(i_win) = runrmssd(nn_win.* 1000); % compute and convert to ms
 
             % pNN50
             out.pnn50(i_win) = pnna(nn_win, alpha); % 
-
+            % pNN20
+            out.pnn20(i_win) = pnna(nn_win, 20); % 
+            
             out.btsdet(i_win) = length(nn_win);
             out.avgsqi(i_win) = mean(sqi_win(:,2));
             
             out.tdflag(i_win) = 5; % 5 : 'sucess';
+
           
         else
             % 2: low SQI

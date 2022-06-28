@@ -25,11 +25,13 @@
 
 clear all
 clc
-
-run(['..' filesep 'startup.m'])
+filepath = 'Z:\SIESTA\ANNE Validation\shhs';
+script = [filepath '\code'];
+toolbox_p = [script filesep 'PhysioNet-Cardiovascular-Signal-Toolbox']
+run([toolbox_p filesep 'startup.m'])
 
 % Where are the data, in this demo they are located in a subfolder
-InputFolder = [pwd filesep 'TestData' filesep 'mitdb-Arrhythmia']; % path to the folder where you data are located
+InputFolder = [toolbox_p filesep 'Demos' filesep 'TestData' filesep 'mitdb-Arrhythmia']; % path to the folder where you data are located
 SigName = '200m';
 
 % load the ecg signa using load (it loads a variable called val)

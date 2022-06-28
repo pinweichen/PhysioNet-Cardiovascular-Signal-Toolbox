@@ -1,4 +1,4 @@
-function HRVparams = InitializeHRVparams(project_name)
+function HRVparams = InitializeHRVparams(project_name, Sub_ID)
 %
 %   settings = InitializeHRVparams('project_name')
 %
@@ -28,6 +28,7 @@ function HRVparams = InitializeHRVparams(project_name)
 %   INPUT:      
 %       project_name = a string with the name of the project - this
 %       will determine the naming convention of file folders 
+%       Sub_ID = a string for the subject number
 %
 %   OUTPUT:
 %       HRVparams - struct of various settings for the hrv_toolbox analysis
@@ -62,12 +63,12 @@ end
 % Set up input options for a specific project
 switch project_name   
     % Define new project name and parameters
-    case 'MyProjectName'                   % Update with your project name
-        HRVparams.Fs = NaN;                % Spacify sampling frequency
-        HRVparams.readdata = '';           % (Optional) Specify name for data input folder
-        HRVparams.writedata = '';          % (Optional) Specify name for data output folder
-        HRVparams.datatype = '';           % (Optional) Spacify Data type of input
-        HRVparams.ext = '';                % (Optional) Spacify file extension of input (e.g., 'mat','qrs')
+    case 'shhs'                   % Update with your project name
+        HRVparams.Fs = 125;                % Spacify sampling frequency
+        HRVparams.readdata = [];           % (Optional) Specify name for data input folder
+        HRVparams.writedata = [];          % (Optional) Specify name for data output folder
+        HRVparams.datatype = 'csv';           % (Optional) Spacify Data type of input
+        HRVparams.ext = 'csv';                % (Optional) Spacify file extension of input (e.g., 'mat','qrs')
         
     % Existing demo projects
     case 'MVanalysis'                      % Morphological variability analysis ECG
@@ -114,7 +115,7 @@ end
 
 if  isempty(HRVparams.writedata)    
     % Default data OUTPUT folder name based on project name
-    HRVparams.writedata = strcat(project_name,'_Results');  
+    HRVparams.writedata = strcat(Sub_ID);  
     fprintf('New OUTPUT folder: "%s"\n', HRVparams.writedata)
     mkdir(HRVparams.writedata);          % Create output folder and 
 elseif ~exist([pwd filesep HRVparams.writedata], 'dir')
@@ -146,7 +147,7 @@ HRVparams.data_confidence_level = 1;
 
 %% 3. Global Settings (Window Size)
 
-HRVparams.windowlength = 300;	      % Default: 300, seconds
+HRVparams.windowlength = 30;	      % Default: 300, seconds
 HRVparams.increment = 30;             % Default: 30, seconds increment
 HRVparams.numsegs = 5;                % Default: 5, number of segments to collect with lowest HR
 HRVparams.RejectionThreshold = .20;   % Default: 0.2, amount (%) of data that can be rejected before a
@@ -159,7 +160,7 @@ HRVparams.rawsig = 0;           % Load raw signal if it is available for debuggi
 HRVparams.debug = 0;
 
 %% 6. SQI Analysis Settings 
-HRVparams.sqi.LowQualityThreshold = 0.9; % Default: 0.9, Threshold for which SQI represents good data
+HRVparams.sqi.LowQualityThreshold = 0.8; % Default: 0.9, Threshold for which SQI represents good data
 HRVparams.sqi.windowlength = 10;         % Default: 10, seconds, length of the comparison window
 HRVparams.sqi.increment = 1;             % Default: 1, seconds
 HRVparams.sqi.TimeThreshold = 0.1;       % Default: 0.1, seconds
@@ -330,7 +331,7 @@ end
 % Format settings for HRV Outputs
 HRVparams.output.format = 'csv';        % 'csv' - creates csv file for output
                                         % 'mat' - creates .mat file for output
-HRVparams.output.separate = 1;          % Default : 1 = separate files for each subject
+HRVparams.output.separate = 0;          % Default : 1 = separate files for each subject
                                         %           0 = all results in one file
 HRVparams.output.num_win = [];          % Specify number of lowest hr windows returned
                                         % leave blank if all windows should be returned
@@ -339,7 +340,8 @@ HRVparams.output.ann_format = 'binary'; % 'binary'  = binary annotation file gen
                                         % 'csv'     = ASCII CSV file generated
                             
 %% 19. Filename to Save Data
-HRVparams.time = datestr(now, 'yyyymmdd');              % Setup time for filename of output
+%HRVparams.time = datestr(now, 'yyyymmdd');  % Setup time for filename of output
+HRVparams.time = [];  % Setup time for filename of output
 HRVparams.filename = [HRVparams.time '_' project_name];
 
 

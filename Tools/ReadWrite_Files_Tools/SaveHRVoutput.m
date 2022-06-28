@@ -72,21 +72,22 @@ else % HRV results
     if ~isempty(HRVparams.output.num_win) 
         fileNameWind = strcat('HRV_results_', num2str(HRVparams.output.num_win), 'LowestHRwin_', HRVparams.time);
     else
-        fileNameWind = strcat('HRV_results_allwindows_', HRVparams.time);
+        fileNameWind = strcat('HRV_results_allwindows', HRVparams.time);
     end
     % All patients or Separate
     if HRVparams.output.separate
         % Generate a new file for each output
-        filename = strcat(sub_id, '_', fileNameWind);
+        filename = strcat(HRVparams.writedata, '_', fileNameWind);
+        %filename = strcat(fileNameWind);
     else
-        filename = strcat('AllPatients_', fileNameWind);
+        filename = strcat(fileNameWind);
     end
     
     % Generate csv file
     if strcmp(HRVparams.output.format,'csv')  
         % Add .csv extension to filename
         fullfilename = strcat(HRVparams.writedata, filesep, filename, '.csv');    
-        
+        %fullfilename = strcat(HRVparams.writedata,'.csv');    
         if ~isempty(HRVparams.output.num_win) 
             % Returns results based on the number of windows set by the HRVparams file
             x = size(results);
