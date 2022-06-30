@@ -1,4 +1,4 @@
-function filename = SaveHRVoutput(sub_id,windows_all,results,titles,type,HRVparams, tNN, NN)
+function filename = SaveHRVoutput(sub_id, windows_all,results,titles,type,HRVparams, tNN, NN)
 %   
 %   SaveHRVoutput(sub_id,windows_all,results,titles,type,HRVparams, tNN, NN)
 %
@@ -69,6 +69,7 @@ if strcmp(type,'AF') || strcmp(type,'MSE') || strcmp(type,'SQI')|| strcmp(type, 
 else % HRV results
    
     % All windows or Lowest HR windows results 
+    %if ~isempty(HRVparams.output.num_win) 
     if ~isempty(HRVparams.output.num_win) 
         fileNameWind = strcat('HRV_results_', num2str(HRVparams.output.num_win), 'LowestHRwin_', HRVparams.time);
     else
