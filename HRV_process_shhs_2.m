@@ -21,13 +21,13 @@ ls_ECG = ls_name(indx);
 ls_ECGname = erase(ls_ECG, "_ECG.csv");
 input_path = [filepath '\preprocessed\level_1'];
 output_path = [filepath '\preprocessed\level_2\ECG'];
-%1 ~ 100 of the list done
-for c = 11:100
+%%
+%%1 ~ 100 of the list done
+for c = 31
     subID = char(ls_ECGname(c));
     %subID = 'shhs1-200002';
 
     ECG_dt = readtable([input_path strcat('\', subID, '_ECG.csv')]);
-
     InputSigshhs = transpose(ECG_dt{:,1});
     %sub_p = [output_path '\' subID];
     cd(output_path)
@@ -36,8 +36,7 @@ for c = 11:100
     HRVparams = InitializeHRVparams('shhs', subID);
     %[results, resFilename] = Main_HRV_Analysis(InputSigshhs,[],'ECGWaveform',HRVparams,'shhs1-200003');
     [t, rr, jqrs_ann, SQIvalue , tSQI] = ConvertRawDataToRRIntervals(InputSigshhs, HRVparams, subID);
-    sqi = [tSQI', SQIvalue'];     
-
+    sqi = [tSQI', SQIvalue'];
 
     % 1. Preprocess Data, AF detection, create Windows Indexes 
     error_flag = 'Data Preprocessing or AF detection failure';
@@ -49,7 +48,7 @@ for c = 11:100
 
     % 3. Calculate time domain HRV metrics - Using HRV Toolbox for PhysioNet 
         %    Cardiovascular Signal Toolbox Toolbox Functions        
-    if HRVparams.timedomain.on 
+    if HRVparams.timedomain.on
         error_flag = 'Time Domain Analysis failure';
         TimeMetrics = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,tWin);
         % Export results
@@ -66,7 +65,7 @@ for c = 11:100
     end
 
     % 4. Frequency domain  metrics (LF HF TotPow) 
-    if HRVparams.freq.on 
+    if HRVparams.freq.on
         error_flag = 'Frequency Domain Analysis failure';
         FreqMetrics = EvalFrequencyDomainHRVstats(NN,tNN,sqi,HRVparams,tWin);
         % Export results
@@ -151,7 +150,7 @@ for c = 11:100
     % Generates Output - Never comment out
     error_flag = 'Failure during output file generation';
 
-    ResultsFileName.HRV = SaveHRVoutput(subID, tWin,HRVout,HRVtitle, [],HRVparams, tNN, NN);
+    ResultsFileName.HRV = SaveHRVoutput(subID, tWin, HRVout, HRVtitle, 'HRV', HRVparams, tNN, NN);
     error_flag = []; % clean error flag 
 
 
@@ -201,8 +200,8 @@ for c = 11:100
     %     fclose(fid); 
     %end % end of HRV analysis
 
-    clear twin tSQI tNN TimeMetrics t subID SQIvalue sqi SD2 SD12Ratio SD1 SampEn rr ResultsFileName r NN jqrs_ann InputSigshhs
-    clear HRVtitle HRVparams HRVout FreqMetrics ECG_dt dc ApEn AFWindow ans ac 
+%    clear twin tSQI tNN TimeMetrics t subID SQIvalue sqi SD2 SD12Ratio SD1 SampEn rr ResultsFileName r NN jqrs_ann InputSigshhs
+%    clear HRVtitle HRVparams HRVout FreqMetrics ECG_dt dc ApEn AFWindow ans ac 
 end
 
 

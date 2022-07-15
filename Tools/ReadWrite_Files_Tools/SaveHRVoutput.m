@@ -51,7 +51,7 @@ end
 
 % Establish Filename Based on Type of Output
 if strcmp(type,'AF') || strcmp(type,'MSE') || strcmp(type,'SQI')|| strcmp(type, 'DFA') || strcmp(type, 'HRT')
-    filename = strcat( sub_id, '_', type, '_results_', HRVparams.time);
+    filename = strcat( sub_id, '_', type, '_results', HRVparams.time);
     if strcmp(HRVparams.output.format,'csv')
         % Add .csv extension to filename and directory
         fullfilename = strcat(HRVparams.writedata, filesep, filename, '.csv'); 
@@ -97,7 +97,7 @@ else % HRV results
             
             % Find num_win windows with the lowest HR
             if num_results > 1
-                windows_output = FindLowestHRwin(windows_all,tNN, NN, HRVparams.output.num_win,HRVparams);
+                 
                 for i = 1:HRVparams.output.num_win
                     windx(i) = find(windows_output(i).t == windows_all);  
                 end
@@ -112,13 +112,17 @@ else % HRV results
             end
 
             % Write HRV results to a table 
-            try
-                T = readtable(fullfilename);
-            catch
-                T = [];
-            end
+            %try
+            %    T = readtable(fullfilename);
+            %catch
+            %    T = [];
+            %end
+            T = []; % Bypassed the reading previous data
             T = [T ; array2table(variables_vals,'VariableNames',variables_names)];
             % Use writetable to geberate csv file with the results   
+            if exist(fullfilename, 'file')==2
+             delete(fullfilename);
+            end
             writetable(T,fullfilename);
                 
         elseif isempty(HRVparams.output.num_win) 
@@ -128,14 +132,18 @@ else % HRV results
             patid_array  = string(repmat({sub_id},size(results,1),1));
             variables_vals = [patid_array results]; % Add colum with patient ID
 
-            % Write HRV results to a table
-            try
-                T = readtable(fullfilename);
-            catch
-                T = [];
-            end
+%             % Write HRV results to a table
+%             try
+%                 T = readtable(fullfilename);
+%             catch
+%                 T = [];
+%             end
+            T = [];
             T = [T ; array2table(variables_vals,'VariableNames',variables_names)];
             % Use writetable to geberate csv file with the results   
+            if exist(fullfilename, 'file')==2
+             delete(fullfilename);
+            end
             writetable(T,fullfilename);
 
         else

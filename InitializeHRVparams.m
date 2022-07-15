@@ -152,7 +152,7 @@ HRVparams.increment = 30;             % Default: 30, seconds increment
 HRVparams.numsegs = 5;                % Default: 5, number of segments to collect with lowest HR
 HRVparams.RejectionThreshold = .20;   % Default: 0.2, amount (%) of data that can be rejected before a
                                       % window is considered too low quality for analysis
-HRVparams.MissingDataThreshold = .15; % Default: 0.15, maximum percentage of data allowable to be missing
+HRVparams.MissingDataThreshold = .30; % Default: 0.15, maximum percentage of data allowable to be missing
                                       % from a window .15 = 15%
 %% 5. Debug Settings
 
@@ -186,7 +186,7 @@ HRVparams.preprocess.method_unphysio = 'rem';       % Default: 'rem', Method of 
 
 % The following settings do not yet have any functional effect on 
 % the output of preprocess.m:                             
-HRVparams.preprocess.threshold1 = 0.9 ;	        % Default: 0.9, Threshold for which SQI represents good data
+HRVparams.preprocess.threshold1 = 0.8 ;	        % Default: 0.9, Threshold for which SQI represents good data
 HRVparams.preprocess.minlength = 30;            % Default: 30, The minimum length of a good data segment in seconds
                                 
 %% 8. AF Detection Settings and PVC detection
@@ -247,7 +247,7 @@ HRVparams.freq.resampled_burg_poles = 100;      % Default: 100
 
 %% 11. SDANN and SDNNI Analysis Settings
 HRVparams.sd.on = 1;                        % Default: 1, SD analysis 1=On or 0=Off
-HRVparams.sd.segmentlength = 300;           % Default: 300, windows length in seconds
+HRVparams.sd.segmentlength = 30;           % Default: 300, windows length in seconds
 
 %% 12. PRSA Analysis Settings
 
