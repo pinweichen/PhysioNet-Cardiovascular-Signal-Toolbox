@@ -23,7 +23,7 @@ input_path = [filepath '\preprocessed\level_1'];
 output_path = [filepath '\preprocessed\level_2\ECG'];
 %%
 %%1 ~ 100 of the list done
-for c = 31
+for c = 1
     subID = char(ls_ECGname(c));
     %subID = 'shhs1-200002';
 
@@ -31,7 +31,7 @@ for c = 31
     InputSigshhs = transpose(ECG_dt{:,1});
     %sub_p = [output_path '\' subID];
     cd(output_path)
-
+    
     %try
     HRVparams = InitializeHRVparams('shhs', subID);
     %[results, resFilename] = Main_HRV_Analysis(InputSigshhs,[],'ECGWaveform',HRVparams,'shhs1-200003');

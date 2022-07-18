@@ -101,14 +101,18 @@ else % HRV results
                 for i = 1:HRVparams.output.num_win
                     windx(i) = find(windows_output(i).t == windows_all);  
                 end
-                variables_names = ['patID' titles]; % Add colum with patient ID
+                %variables_names = ['patID' titles]; % Add colum with patient ID
+                variables_names = titles; % Add colum with patient ID
                 results = results(windx,:);
-                patid_array  = string(repmat({sub_id},size(results,1),1));
-                variables_vals = [patid_array results]; % Add colum with patient ID
+                %patid_array  = string(repmat({sub_id},size(results,1),1));
+                %variables_vals = [patid_array results]; % Add colum with patient ID
+                variables_vals = results; % Add colum with patient ID
             else
-                variables_names = ['patID' titles]; % Add colum with patient ID
-                patid_array  = string(repmat({sub_id},size(results,1),1));
-                variables_vals = [patid_array results]; % Add colum with patient ID
+                %variables_names = ['patID' titles]; % Add colum with patient ID
+                variables_names = titles; % Add colum with patient ID
+                %patid_array  = string(repmat({sub_id},size(results,1),1));
+                %variables_vals = [patid_array results]; % Add colum with patient ID
+                variables_vals = results; % Add colum with patient ID
             end
 
             % Write HRV results to a table 
@@ -128,10 +132,11 @@ else % HRV results
         elseif isempty(HRVparams.output.num_win) 
         
             % Print out all the window values for all variables
-            variables_names = ['patID' titles]; % Add colum with patient ID
-            patid_array  = string(repmat({sub_id},size(results,1),1));
-            variables_vals = [patid_array results]; % Add colum with patient ID
-
+            variables_names = titles; % Add colum with patient ID
+            %variables_names = ['patID' titles]; % Add colum with patient ID
+            %patid_array  = string(repmat({sub_id},size(results,1),1));
+            %variables_vals = [patid_array results]; % Add colum with patient ID
+            variables_vals = results; % Add colum with patient ID
 %             % Write HRV results to a table
 %             try
 %                 T = readtable(fullfilename);
