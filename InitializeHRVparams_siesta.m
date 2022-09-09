@@ -1,4 +1,4 @@
-function HRVparams = InitializeHRVparams(project_name, Sub_ID)
+function HRVparams = InitializeHRVparams(project_name, Sub_ID, foldID)
 %
 %   settings = InitializeHRVparams('project_name')
 %
@@ -122,7 +122,7 @@ end
 
 if  isempty(HRVparams.writedata)    
     % Default data OUTPUT folder name based on project name
-    HRVparams.writedata = strcat(Sub_ID,'/',);  
+    HRVparams.writedata = strcat(Sub_ID,'\',foldID);  
     fprintf('New OUTPUT folder: "%s"\n', HRVparams.writedata)
     mkdir(HRVparams.writedata);          % Create output folder and 
 elseif ~exist([pwd filesep HRVparams.writedata], 'dir')
@@ -154,12 +154,12 @@ HRVparams.data_confidence_level = 1;
 
 %% 3. Global Settings (Window Size)
 
-HRVparams.windowlength = 30;	      % Default: 300, seconds
+HRVparams.windowlength = 300;	      % Default: 300, seconds
 HRVparams.increment = 30;             % Default: 30, seconds increment
 HRVparams.numsegs = 5;                % Default: 5, number of segments to collect with lowest HR
-HRVparams.RejectionThreshold = .7;   % Default: 0.2, amount (%) of data that can be rejected before a
+HRVparams.RejectionThreshold = .5;   % Default: 0.2, amount (%) of data that can be rejected before a
                                       % window is considered too low quality for analysis
-HRVparams.MissingDataThreshold = .50; % Default: 0.15, maximum percentage of data allowable to be missing
+HRVparams.MissingDataThreshold = .3; % Default: 0.15, maximum percentage of data allowable to be missing
                                       % from a window .15 = 15%
 %% 5. Debug Settings
 
@@ -167,9 +167,9 @@ HRVparams.rawsig = 0;           % Load raw signal if it is available for debuggi
 HRVparams.debug = 0;
 
 %% 6. SQI Analysis Settings 
-HRVparams.sqi.LowQualityThreshold = 0.4; % Default: 0.9, Threshold for which SQI represents good data
-HRVparams.sqi.windowlength = 30;         % Default: 10, seconds, length of the comparison window
-HRVparams.sqi.increment = 5;             % Default: 1, seconds
+HRVparams.sqi.LowQualityThreshold = 0.7; % Default: 0.9, Threshold for which SQI represents good data
+HRVparams.sqi.windowlength = 10;         % Default: 10, seconds, length of the comparison window
+HRVparams.sqi.increment = 1;             % Default: 1, seconds
 HRVparams.sqi.TimeThreshold = 0.1;       % Default: 0.1, seconds
 HRVparams.sqi.margin = 2;                % Default: 2, seconds, Margin time not include in comparison 
 
@@ -186,14 +186,14 @@ HRVparams.preprocess.method_outliers = 'cub';       % Default: 'rem', Method of 
                                                     % 'pchip' = replace with pchip method
 HRVparams.preprocess.lowerphysiolim = 60/160;       % Default: 60/160
 HRVparams.preprocess.upperphysiolim = 60/30;        % Default: 60/30
-HRVparams.preprocess.method_unphysio = 'cub';       % Default: 'rem', Method of dealing with unphysiologically low beats
+HRVparams.preprocess.method_unphysio = 'rem';       % Default: 'rem', Method of dealing with unphysiologically low beats
                                                     % 'cub' = replace outlier points with cubic spline method
                                                     % 'rem' = remove outlier points
                                                     % 'pchip' = replace with pchip method
 
 % The following settings do not yet have any functional effect on 
 % the output of preprocess.m:                             
-HRVparams.preprocess.threshold1 = 0.7 ;	        % Default: 0.9, Threshold for which SQI represents good data
+HRVparams.preprocess.threshold1 = 0.9 ;	        % Default: 0.9, Threshold for which SQI represents good data
 HRVparams.preprocess.minlength = 30;            % Default: 30, The minimum length of a good data segment in seconds
                                 
 %% 8. AF Detection Settings and PVC detection
@@ -356,7 +356,7 @@ HRVparams.filename = [HRVparams.time '_' project_name];
 % Note that if you change the order of the parameters or add parameters 
 % this might not work
 
-ExportHRVparams(HRVparams);
+%ExportHRVparams(HRVparams);
 
 
 

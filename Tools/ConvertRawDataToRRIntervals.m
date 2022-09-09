@@ -52,6 +52,7 @@ if size(ECG_RawData,1)<size(ECG_RawData,2)
 end
 
 ECG_RawData = ECG_RawData(:,1); % If more the one leads use only the first
+ECG_RawData = normalize(ECG_RawData); % Normalize the ECG data
 
 % QRS Dection 1 - jqrs
 jqrs_ann = run_qrsdet_by_seg(ECG_RawData,HRVparams);
@@ -74,24 +75,28 @@ t = jqrs_ann(2:end)./HRVparams.Fs;
 %%  Export Annotations as ATR files
 
 % Create a Folder for Annotations
-WriteAnnotationFolder = [HRVparams.writedata filesep 'Annotation'];
-if ~exist(WriteAnnotationFolder, 'dir')
-   mkdir(WriteAnnotationFolder)
-   fprintf('Creating a new folder: "Annotation", folder is located in %s \n',[pwd filesep WriteAnnotationFolder]);
-end
-addpath(WriteAnnotationFolder)
+%WriteAnnotationFolder = [HRVparams.writedata filesep 'Annotation'];
+%if ~exist(WriteAnnotationFolder, 'dir')
+%   mkdir(WriteAnnotationFolder)
+%   fprintf('Creating a new folder: "Annotation", folder is located in %s \n',[pwd filesep WriteAnnotationFolder]);
+%end
+%addpath(WriteAnnotationFolder)
 
-AnnFile = strcat(WriteAnnotationFolder, filesep, subjectID);
+%AnnFile = strcat(WriteAnnotationFolder, filesep, subjectID);
+%=============================
+% Reduce number of files existed in the folder by removing the annotation
+% binary files 
+%=====================================
 % Header File
-write_hea(AnnFile, HRVparams.Fs, length(ECG_RawData), 'jqrs', 1, 0,'mV')
+%write_hea(AnnFile, HRVparams.Fs, length(ECG_RawData), 'jqrs', 1, 0,'mV')
 % ECG QRS
-write_ann(AnnFile, HRVparams,'jqrs',jqrs_ann);
-write_ann(AnnFile, HRVparams,'sqrs',sqrs_ann);
-write_ann(AnnFile, HRVparams,'wqrs',wqrs_ann);
+%write_ann(AnnFile, HRVparams,'jqrs',jqrs_ann); % size reduction
+%write_ann(AnnFile, HRVparams,'sqrs',sqrs_ann); % size reduction
+%write_ann(AnnFile, HRVparams,'wqrs',wqrs_ann); % size reduction
 fakeAnnType = repmat('S',[length(SQIjs), 1]);
-write_ann(AnnFile, HRVparams,'sqijs', StartSQIwindows_js.*HRVparams.Fs, fakeAnnType ,round(SQIjs*100));%write_ann(AnnFile, HRVparams,'sqijs', StartSQIwindows_js, fakeAnnType ,round(SQIjs*100)); 
+%write_ann(AnnFile, HRVparams,'sqijs', StartSQIwindows_js.*HRVparams.Fs, fakeAnnType ,round(SQIjs*100));%write_ann(AnnFile, HRVparams,'sqijs', StartSQIwindows_js, fakeAnnType ,round(SQIjs*100)); 
 fakeAnnType = repmat('S',[length(SQIjw), 1]);
-write_ann(AnnFile, HRVparams,'sqijw', StartSQIwindows_jw.*HRVparams.Fs,fakeAnnType ,round(SQIjw*100));%write_ann(AnnFile, HRVparams,'sqijw', StartSQIwindows_jw,fakeAnnType ,round(SQIjw*100)); 
+%write_ann(AnnFile, HRVparams,'sqijw', StartSQIwindows_jw.*HRVparams.Fs,fakeAnnType ,round(SQIjw*100));%write_ann(AnnFile, HRVparams,'sqijw', StartSQIwindows_jw,fakeAnnType ,round(SQIjw*100)); 
 
 
 

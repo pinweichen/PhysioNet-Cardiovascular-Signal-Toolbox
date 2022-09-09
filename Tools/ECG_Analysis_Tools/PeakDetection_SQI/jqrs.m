@@ -131,8 +131,12 @@ try
          -0.280328573340852 -0.200064921294891 -0.129740392318591 -0.077080889653194 -0.042182820580118 ...
          -0.021344241245400 -0.010013251577232 -0.004364327211358 -0.001770119249103 -6.689305101192819e-04...
          -2.357742589814283e-04 -7.757327341237223e-05];
-
-    b1 = resample(b1,fs,250);
+    p = 512; % Keep having error here. 
+    %Error using resample
+    %Expected P to be integer-valued.
+    q = 2*p;
+    %b1 = double(b1);
+    b1 = resample(b1,p,q);
     bpfecg = filtfilt(b1,1,ecg)';
     
     if (length(find(abs(bpfecg)>MIN_AMP))/NB_SAMP)>0.20

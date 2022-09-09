@@ -23,7 +23,8 @@ input_path = [filepath '\preprocessed\level_1'];
 output_path = [filepath '\preprocessed\level_2\ECG'];
 %%
 %%1 ~ 100 of the list done
-for c = 1
+% subject 114: Error using arspectra: Error in HRV_process_shhs_2>PreparDataForHRVAnlysis (line 237)
+for c = 115:150
     subID = char(ls_ECGname(c));
     %subID = 'shhs1-200002';
 
@@ -35,9 +36,16 @@ for c = 1
     %try
     HRVparams = InitializeHRVparams('shhs', subID);
     %[results, resFilename] = Main_HRV_Analysis(InputSigshhs,[],'ECGWaveform',HRVparams,'shhs1-200003');
+    % Initial high frequency noise filter
+    
+    ECG_dt_filt = highpass(InputSigshhs,0.05,HRVparams.Fs,'ImpulseResponse','fir' );
+    pspectrum([ECG_dt_filt InputSigshhs],HRVparams.Fs, 'FrequencyResolution',5 )
+    
+    
     [t, rr, jqrs_ann, SQIvalue , tSQI] = ConvertRawDataToRRIntervals(InputSigshhs, HRVparams, subID);
     sqi = [tSQI', SQIvalue'];
-
+    
+    
     % 1. Preprocess Data, AF detection, create Windows Indexes 
     error_flag = 'Data Preprocessing or AF detection failure';
     [NN, tNN, tWin, AFWindows,out] = PreparDataForHRVAnlysis(rr,t,[], sqi,HRVparams,subID);

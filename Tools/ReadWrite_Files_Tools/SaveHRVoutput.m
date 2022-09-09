@@ -58,7 +58,7 @@ if strcmp(type,'AF') || strcmp(type,'MSE') || strcmp(type,'SQI')|| strcmp(type, 
         % Write AF results to a table 
         T =  array2table(results,'VariableNames',titles);
         % Use writetable to geberate csv file with the results   
-        writetable(T,fullfilename);        
+        writetable(T,fullfilename);
     elseif strcmp(HRVparams.output.format,'mat')
         % Add .mat extension to filename and directory
         fullfilename = strcat(HRVparams.writedata, filesep, filename, '.mat');
@@ -87,7 +87,8 @@ else % HRV results
     % Generate csv file
     if strcmp(HRVparams.output.format,'csv')  
         % Add .csv extension to filename
-        fullfilename = strcat(HRVparams.writedata, filesep, filename, '.csv');    
+        fullfilename = strcat(HRVparams.writedata, filesep, filename, '.csv');
+        
         %fullfilename = strcat(HRVparams.writedata,'.csv');    
         if ~isempty(HRVparams.output.num_win) 
             % Returns results based on the number of windows set by the HRVparams file
@@ -97,9 +98,9 @@ else % HRV results
             
             % Find num_win windows with the lowest HR
             if num_results > 1
-                 
+
                 for i = 1:HRVparams.output.num_win
-                    windx(i) = find(windows_output(i).t == windows_all);  
+                    windx(i) = find(windows_output(i).t == windows_all);
                 end
                 %variables_names = ['patID' titles]; % Add colum with patient ID
                 variables_names = titles; % Add colum with patient ID
@@ -174,7 +175,77 @@ else % HRV results
             save(fullfilename, 'results', 'titles');
         else
         end
-    else
+    elseif strcmp(HRVparams.output.format,'parquet')  
+        % Add .csv extension to filename
+        fullfilename = strcat(HRVparams.writedata, filesep, filename, '.parquet');
+        
+        %fullfilename = strcat(HRVparams.writedata,'.csv');    
+        if ~isempty(HRVparams.output.num_win) 
+            % Returns results based on the number of windows set by the HRVparams file
+            x = size(results);
+            idx = find(length(titles) == x);
+            num_results = x(3-idx);
+            
+            % Find num_win windows with the lowest HR
+            if num_results > 1
+                 
+                for i = 1:HRVparams.output.num_win
+                    windx(i) = find(windows_output(i).t == windows_all);  
+                end
+                %variables_names = ['patID' titles]; % Add colum with patient ID
+                variables_names = titles; % Add colum with patient ID
+                results = results(windx,:);
+                %patid_array  = string(repmat({sub_id},size(results,1),1));
+                %variables_vals = [patid_array results]; % Add colum with patient ID
+                variables_vals = results; % Add colum with patient ID
+            else
+                %variables_names = ['patID' titles]; % Add colum with patient ID
+                variables_names = titles; % Add colum with patient ID
+                %patid_array  = string(repmat({sub_id},size(results,1),1));
+                %variables_vals = [patid_array results]; % Add colum with patient ID
+                variables_vals = results; % Add colum with patient ID
+            end
+
+            % Write HRV results to a table 
+            %try
+            %    T = readtable(fullfilename);
+            %catch
+            %    T = [];
+            %end
+            T = []; % Bypassed the reading previous data
+            T = [T ; array2table(variables_vals,'VariableNames',variables_names)];
+            % Use writetable to geberate csv file with the results   
+            if exist(fullfilename, 'file')==2
+             delete(fullfilename);
+            end
+            parquetwrite(fullfilename,T);
+                
+        elseif isempty(HRVparams.output.num_win)
+        
+            % Print out all the window values for all variables
+            variables_names = titles; % Add colum with patient ID
+            %variables_names = ['patID' titles]; % Add colum with patient ID
+            %patid_array  = string(repmat({sub_id},size(results,1),1));
+            %variables_vals = [patid_array results]; % Add colum with patient ID
+            variables_vals = results; % Add colum with patient ID
+%             % Write HRV results to a table
+%             try
+%                 T = readtable(fullfilename);
+%             catch
+%                 T = [];
+%             end
+            T = [];
+            T = [T ; array2table(variables_vals,'VariableNames',variables_names)];
+            % Use writetable to geberate csv file with the results   
+            if exist(fullfilename, 'file')==2
+             delete(fullfilename);
+            end
+            parquetwrite(fullfilename,T);
+
+        else
+            % Do nothing.
+        end % End decision based on number of windows needed to be returned
+
         % Return nothing.
     end
 end
