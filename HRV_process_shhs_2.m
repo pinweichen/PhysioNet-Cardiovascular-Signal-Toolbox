@@ -24,7 +24,7 @@ output_path = [filepath '\preprocessed\level_2\ECG'];
 %%
 %%1 ~ 100 of the list done
 % subject 114: Error using arspectra: Error in HRV_process_shhs_2>PreparDataForHRVAnlysis (line 237)
-for c = 115:150
+for c = 1
     subID = char(ls_ECGname(c));
     %subID = 'shhs1-200002';
 
