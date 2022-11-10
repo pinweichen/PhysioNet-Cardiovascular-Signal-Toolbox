@@ -164,9 +164,9 @@ HRVparams.data_confidence_level = 1;
 HRVparams.windowlength = 30;	      % Default: 300, seconds
 HRVparams.increment = 30;             % Default: 30, seconds increment
 HRVparams.numsegs = 5;                % Default: 5, number of segments to collect with lowest HR
-HRVparams.RejectionThreshold = 0.8;   % Default: 0.2, amount (%) of data that can be rejected before a
+HRVparams.RejectionThreshold = 0.2;   % Default: 0.2, amount (%) of data that can be rejected before a
                                       % window is considered too low quality for analysis
-HRVparams.MissingDataThreshold = .8; % Default: 0.15, maximum percentage of data allowable to be missing
+HRVparams.MissingDataThreshold = .5; % Default: 0.15, maximum percentage of data allowable to be missing
                                       % from a window .15 = 15%
 %% 5. Debug Settings
 
@@ -177,22 +177,22 @@ HRVparams.debug = 0;
 HRVparams.sqi.LowQualityThreshold = 0.2; % Default: 0.9, Threshold for which SQI represents good data
 HRVparams.sqi.windowlength = 10;         % Default: 10, seconds, length of the comparison window
 HRVparams.sqi.increment = 1;             % Default: 1, seconds
-HRVparams.sqi.TimeThreshold = 0.5;       % Default: 0.1, seconds
+HRVparams.sqi.TimeThreshold = 0.1;       % Default: 0.1, seconds
 HRVparams.sqi.margin = 2;                % Default: 2, seconds, Margin time not include in comparison 
 
 
 %% 7. Preprocess Settings
 
-HRVparams.preprocess.figures = 0;                   % Figures on = 1, Figures off = 0
+HRVparams.preprocess.figures = 1;                   % Figures on = 1, Figures off = 0
 HRVparams.preprocess.gaplimit = 2;                  % Default: 2, seconds; maximum believable gap in rr intervals
-HRVparams.preprocess.per_limit = 0.2;               % Default: 0.2, Percent limit of change from one interval to the next
+HRVparams.preprocess.per_limit = 0.4;               % Default: 0.2, Percent limit of change from one interval to the next
 HRVparams.preprocess.forward_gap = 3;	            % Default: 3, Maximum tolerable gap at beginning of timeseries in seconds
 HRVparams.preprocess.method_outliers = 'cub';       % Default: 'rem', Method of dealing with outliers
                                                     % 'cub' = replace outlier points with cubic spline method
                                                     % 'rem' = remove outlier points
                                                     % 'pchip' = replace with pchip method
-HRVparams.preprocess.lowerphysiolim = 60/320;       % Default: 60/160
-HRVparams.preprocess.upperphysiolim = 60/15;        % Default: 60/30
+HRVparams.preprocess.lowerphysiolim = 60/160;       % Default: 60/160
+HRVparams.preprocess.upperphysiolim = 60/30;        % Default: 60/30
 HRVparams.preprocess.method_unphysio = 'cub';       % Default: 'rem', Method of dealing with unphysiologically low beats
                                                     % 'cub' = replace outlier points with cubic spline method
                                                     % 'rem' = remove outlier points
@@ -205,7 +205,7 @@ HRVparams.preprocess.minlength = 30;            % Default: 30, The minimum lengt
                                 
 %% 8. AF Detection Settings and PVC detection
 
-HRVparams.af.on = 0;              % Default: 1, AF Detection On or Off
+HRVparams.af.on = 1;              % Default: 1, AF Detection On or Off
 HRVparams.af.windowlength = 30;   % Default: 30, Set to include ~30 beats in each window
 HRVparams.af.increment = 30;      % Default: 30, No overlap necessary in AF feat calc
 
@@ -279,7 +279,7 @@ HRVparams.prsa.min_anch = 20;       % Default: 20, minimum number of anchors poi
 
 % The following settings are for jqrs.m
 
-HRVparams.PeakDetect.REF_PERIOD = 0.250;   % Default: 0.25 (should be 0.15 for FECG), refractory period in sec between two R-peaks
+HRVparams.PeakDetect.REF_PERIOD = 0.25;   % Default: 0.25 (should be 0.15 for FECG), refractory period in sec between two R-peaks
 HRVparams.PeakDetect.THRES = .6;           % Default: 0.6, Energy threshold of the detector 
 HRVparams.PeakDetect.fid_vec = [];         % Default: [], If some subsegments should not be used for finding the optimal 
                                            % threshold of the P&T then input the indices of the corresponding points here
