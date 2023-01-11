@@ -21,10 +21,20 @@ ls_ECG = ls_name(indx);
 ls_ECGname = erase(ls_ECG, "_ECG.csv");
 input_path = [filepath '\preprocessed\level_1'];
 output_path = [filepath '\preprocessed\level_2\ECG'];
+%% Get folder names from ECG to remove files that has been processed
+ls_ECG_done = dir(output_path);
+ls_ECG_done = {ls_ECG_done.name};
+indx_ECG = find(contains(ls_ECG_done, 'shhs'));
+ls_ECG_done = ls_ECG_done(indx_ECG); 
+[ls_read, ind_read] = setdiff(ls_ECGname,ls_ECG_done);
+ls_read_a = ls_read(1,2:end);
+ls_ECGname = ls_read_a;
+ls_ECG = ls_ECGname + "_ECG.csv";
+
 %%
-%%1 ~ 100 of the list done
+%%1 ~ 300 of the list done
 % subject 114: Error using arspectra: Error in HRV_process_shhs_2>PreparDataForHRVAnlysis (line 237)
-for c = 1
+for c = 1:length(ls_ECGname)
     subID = char(ls_ECGname(c));
     %subID = 'shhs1-200002';
 
